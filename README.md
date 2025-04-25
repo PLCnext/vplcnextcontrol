@@ -15,7 +15,7 @@ This repository provides an example how a virtual plcnext control can be setup u
 
 
 ```bash
-# 1. Start a root sessiont
+# 1. Start a root session
 sudo -i 
 # 2. Install dependencies
 apt-get install virtualenv podman connmon apparmor netavark pip iproute2 bash fuse-overlayfs uidmap 
@@ -152,12 +152,19 @@ cyclictest --smp --mlockall --priority=99 --policy=fifo --interval=1000 --histog
         podman exec -it <ContainerName> /bin/bash
         ```
 
-* On host device connect via podman 
-    * ssh 10.88.0.X
+    * On host device connect via podman
+        ```bash 
+        ssh 10.88.0.X
+        ```
 
-* From external connect to WBM via 
-    * https.//< HostIP >:8443/wbm on any host nic.
-
+    * From external connect to WBM via 
+          `https.//< HostIP >:8443/wbm`
+        on any host nic.
+        ```yaml
+        ports:
+          - "8080:80"
+          - "8443:443"
+        ```
 ## SystemD Service
 There are two options for service implementations included.
 [template-compose.service](src/includes/template-compose.service) and
