@@ -206,7 +206,7 @@ To remove a vplcnextcontrol the [DEINSTALL.sh](src/DEINSTALL.sh) script can be u
 The virtual plcnext control is licensed via a network license server.
 Checkout [Code Meter Runtime](https://www.wibu.com/support/manuals-guides.html) for details how to setup this server.
 
-An additional guide can be found in the [VPLCnext Control Handbook](www.phoenixcontact.com/).
+An additional guide can be found in the [VPLCnext Control Handbook](https://www.phoenixcontact.com/).
 
 # How To: Change IP after Setup
 
@@ -220,14 +220,13 @@ When externaly modifying the Volume contents it is important that the User/Group
 
 ## Contributing
 
-You can participate in this project by [submitting bugs and feature requests](https://github.com/PLCnext/OSSTemplate/issues). Help us by checking *this guide* how bugs are reported.
-Please let us know if anything is not working out as expected.
+You can participate in this project by [submitting bugs and feature requests](https://github.com/PLCnext/vplcnextcontrol/issues).
+Furthermore you can help us by discussing issues and letting us know where you have problems or where others could struggle.
 
 ## Feedback
-
-* Ask a question in our [Forum](https://www.plcnext-community.net/index.php?option=com_easydiscuss&view=categories&Itemid=221&lang=en).
-* Request a new feature on [GitHub](CONTRIBUTING.md).
-* File a bug in [GitHub Issues](https://github.com/PLCnext/vplcnextcontrol/issues).
+* Ask a question in the [PLCnext Community's Forum](https://www.plcnext-community.net/forum/#/categories)
+* Request a new feature or example to be added on [GitHub](CONTRIBUTING.md)
+* File a bug in [GitHub Issues](https://github.com/PLCnext/vplcnextcontrol/issues)
 
 ## License
 
