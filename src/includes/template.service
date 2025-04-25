@@ -1,0 +1,25 @@
+#---------------------------------------------
+# Copyright Phoenix Contact GmbH & Co. KG
+#---------------------------------------------
+
+[Unit]
+Description=VPLCNEXTCONTROL CONTAINER
+After=network.target
+
+[Service]
+Type=simple
+ExecStartPre=apparmor_parser -r "/etc/apparmor.d/containers/<APPARMOR_PROFILE>"
+ExecStart=podman start -a <CONTAINER_NAME>
+ExecStartPost=podman container inspect -f '{{range $key,$value := .NetworkSettings.Networks}}Network:"{{$key}}" IP-Address:"{{$value.IPAddress}}"\n{{end}}' "<CONTAINER_NAME>"
+ExecStop=podman stop <CONTAINER_NAME>
+
+TimeoutStartSec=60
+TimeoutStopSec=65
+
+Restart=on-failure
+
+# Increase
+RestartSec=10
+
+[Install]
+WantedBy=default.target

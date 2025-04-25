@@ -1,0 +1,28 @@
+#---------------------------------------------
+# Copyright Phoenix Contact GmbH & Co. KG
+#---------------------------------------------
+
+[Unit]
+Description=VPLCNEXTCONTROL CONTAINER
+After=network.target
+
+[Service]
+Type=simple
+ExecStartPre=apparmor_parser -r "/etc/apparmor.d/containers/<APPARMOR_PROFILE>"
+ExecStartPre=+<COMPOSE> -f "<COMPOSE_FILE>" up --no-build --no-recreate --no-start
+ExecStart=+podman start --log-level=ERROR -a <CONTAINER_NAME>
+ExecStartPost=bash -c "until [ \"$(podman inspect -f '{{.State.Status}}' \"<CONTAINER_NAME>\" )\" = \"running\" ]; do sleep 1; done"
+ExecStartPost=+podman container inspect -f '{{range $key,$value := .NetworkSettings.Networks}}Network:"{{$key}}" IP-Address:"{{$value.IPAddress}}"\n{{end}}' "<CONTAINER_NAME>"
+ExecStop=+podman stop --log-level=ERROR <CONTAINER_NAME>
+ExecStopPost=+<COMPOSE> -f "<COMPOSE_FILE>" down
+
+TimeoutStartSec=60
+TimeoutStopSec=65
+
+Restart=on-failure
+
+# Increase
+RestartSec=10
+
+[Install]
+WantedBy=default.target

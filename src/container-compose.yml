@@ -1,0 +1,77 @@
+name: "My" # Environment
+version: "3.9"
+
+volumes:
+  projects:
+  config:
+  data:
+  apps:
+  logs:
+
+networks:
+  ## Profinet Network with layer 2 Support
+  pn_vlan:
+    driver: macvlan
+    driver_opts:
+      parent: "eth0" ## TODO Add Your NIC here!
+      mode: bridge
+    ipam:
+      config:
+        - subnet: "192.168.1.10/24" ## TODO add containers Subnet here.
+          gateway: "192.168.1.1" ## TODO add containers Gateway here.
+  ## Default podman network for Host communication
+  podman:
+    name: podman
+    external: true
+    driver: bridge
+
+services:
+  vplcnext: #Service Name
+    hostname: "vplcnextcontrol1000-x86-64"
+    image: "localhost/vplcnextcontrol1000-x86-64:latest"    ## TODO: select image file to use.
+    networks:
+      pn_vlan:
+        ipv4_address: "192.168.1.10"     ##TODO: add VPLCnext Controls IP to use for PN
+        mac_address: "00:a0:de:ad:be:ef" ##TODO: Insert Unique MAC
+        x-podman.interface_name: eth0  #Mandatory but is only active in podman compose > 1.3.0
+      podman:
+        x-podman.interface_name: eth1  #Mandatory but is only active in podman compose > 1.3.0
+    cap_add:
+      - "ALL" # Give container all capabilities and later restrict through apparmor
+    systemd: always # Necessary for Virtual PLCnext Controls
+    sdnotify: conmon
+    x-podman.conmon-pidfile: /run/vplcnext.pid
+    ulimits:
+      rtprio:
+        soft: -1
+        hard: -1
+      core:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 1024
+        hard: 100000
+    mem_reservation: 500m # recommended minimal available memory
+    stop_grace_period: 60s # grace period for container shutdown.
+    devices:
+      - /dev/fuse #Necessary for SquashFS mounts and PLCnextApp support
+    security_opt:
+      - unmask="/proc/*" #Necessary for container in container support
+      - apparmor=vplcnextcontrol # use "vplcnextcontrol" profile for more security.
+    volumes:
+      - projects:/opt/plcnext/projects
+      - config:/opt/plcnext/config
+      - data:/opt/plcnext/data
+      - apps:/opt/plcnext/apps
+      - logs:/opt/plcnext/logs
+    ports:
+      - "8080:80"
+      - "8443:443"
+    # Features not supported by default Debian 12
+    logging:
+      driver: journald
+    x-podman.uidmaps: # User ID mapping. ContainerUser:HostUser:AmmountOfUIDsAvailable 
+        - "0:10000:65536"
+    x-podman.gidmaps: # Group ID mapping. ContainerGroup:HostGroup:AmmountOfGIDsAvailable
+        - "0:10000:65536"
+
