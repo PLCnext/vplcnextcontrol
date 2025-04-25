@@ -10,6 +10,9 @@ This repository provides an example how a virtual plcnext control can be setup u
 * AppArmor version > 3
 * Real Time Linux: PreemptRT patch
 
+Note: 
+For almost all steps during the installation/configuration/deinstallation process root privileges are necessary.
+
 # Getting Started
 ## Quick start using (Virtual Environment)
 
@@ -83,6 +86,8 @@ cyclictest --smp --mlockall --priority=99 --policy=fifo --interval=1000 --histog
 ```
 
 # Installation process
+
+
 
 ## Configuration
  Prepare the [container-compose.yml](src/container-compose.yml) file for user configurations.
