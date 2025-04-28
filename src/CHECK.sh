@@ -435,19 +435,19 @@ config() {
 	command_check podman "4.6.0"
 	echo
 	command_check podman-compose "1.3.0"
-    echo
+	echo
 	command_check crun "1.14.0"
-    echo
+	echo
 
     echo "AppArmor Enabled:"
 	if command -v aa-enabled; then
     	aa-enabled
-
+		apparmor_parser --version
 	else
 		wrap_bad "AppArmor" "Not installed!"
 	fi
 	echo
-	command_check apparmor_parser "4.0.0"
+
 	echo
 	
 	exit $EXITCODE
