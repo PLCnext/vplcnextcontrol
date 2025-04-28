@@ -4,7 +4,7 @@
 #---------------------------------------------
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
-for file in "${DIR}/includes"/*; do
+for file in "${DIR}/includes"/*.sh; do
     if [[ -f "$file" && ! -x "$file" ]]; then
         echo "ERROR" 
         echo "File $file is not executable."
