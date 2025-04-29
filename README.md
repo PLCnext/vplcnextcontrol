@@ -21,7 +21,7 @@ For almost all steps during the installation/configuration/deinstallation proces
 # 1. Start a root session
 sudo -i 
 # 2. Install dependencies
-apt-get install virtualenv podman connmon apparmor netavark pip iproute2 bash fuse-overlayfs uidmap 
+apt-get install virtualenv podman conmon apparmor netavark pip iproute2 bash fuse-overlayfs uidmap 
 
 # 3. Setup a virtual environment to install the latest version of podman-compose.
 virtualenv plcnext_env
