@@ -109,7 +109,7 @@ cyclictest --smp --mlockall --priority=99 --policy=fifo --interval=1000 --histog
             image: "localhost/vplcnextcontrol1000-x86-64:latest"   
         ```
     * Using container repository. e.g. DockerHub
-        Make sure a valid registry is set ,for the root user in the podman configuration usually located at /etc/containers/
+        Make sure a valid registry is set, for the root user in the podman configuration usually located at /etc/containers/
         ```yaml
             image: "phoenixcontact/plcnext/vplcnextcontrol1000-x86-64:2025.0.0"   
         ```
@@ -151,10 +151,15 @@ cyclictest --smp --mlockall --priority=99 --policy=fifo --interval=1000 --histog
     If it does not exist the image will be loaded via podman-compose from an external registry.
 
 
-* Connecting to the `vplcnextcontrol` container can be done through multiple ways
+* Connecting to the `Virtual PLCnext Container` container can be done through multiple ways
     *   using podman to attach to the container as root
         ```bash
-        podman exec -it <ContainerName> /bin/bash
+        podman exec -it <ContainerName> bash --login
+        ```
+        
+    *   using podman to attach to the container as 'admin' using a login shell.
+        ```bash
+        podman exec -it <ContainerName> bash -c 'su --login admin'
         ```
 
     * On host device connect via podman
@@ -167,7 +172,6 @@ cyclictest --smp --mlockall --priority=99 --policy=fifo --interval=1000 --histog
         on any host nic.
         ```yaml
         ports:
-          - "8080:80"
           - "8443:443"
         ```
 ## SystemD Service
