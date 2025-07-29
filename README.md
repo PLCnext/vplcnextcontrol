@@ -5,7 +5,7 @@ This repository provides an example how a virtual plcnext control can be setup u
 # Prerequisites
 
 * Ubuntu 24.04
-* podman-compose version >=1.3.0
+* podman-compose version >=1.4.1
 * podman version >= 4.9
 * AppArmor version > 3
 * Real Time Linux: PreemptRT patch
@@ -26,7 +26,7 @@ apt-get install virtualenv podman conmon apparmor netavark pip iproute2 bash fus
 # 3. Setup a virtual environment to install the latest version of podman-compose.
 virtualenv plcnext_env
 source plcnext_env/bin/activate
-pip install podman-compose==1.3.0
+pip install podman-compose==1.4.1
 
 # 4. Clone and prepare this repository.
 git clone <this-repository>
@@ -127,9 +127,9 @@ cyclictest --smp --mlockall --priority=99 --policy=fifo --interval=1000 --histog
     This will restrict all the VPLC Processes and files to the user range starting at `30000` and this way stops user collisions. (e.g. user 1001=admin inside container should not be interpreted as user 1001=MyUser on the Host System)
     *   ```yaml
         x-podman.uidmaps: 
-            - "0:30000:65536"
+            - "0:30000:265536"
         x-podman.gidmaps: 
-            - "0:30000:65536"
+            - "0:30000:265536"
         ```
     * NOTE:
         Some older linux distributions do not support sub uids/gids for containers by default. So this feature has to either be installed/activated on the HOST or disabled in the Compose File YAML.
