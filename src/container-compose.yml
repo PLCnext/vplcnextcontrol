@@ -1,4 +1,4 @@
-name: "My" # Environment
+name: "my" # Environment
 version: "3.9"
 
 volumes:
@@ -33,9 +33,9 @@ services:
       pn_vlan:
         ipv4_address: "192.168.1.10"     ##TODO: add VPLCnext Controls IP to use for PN
         mac_address: "00:a0:de:ad:be:ef" ##TODO: Insert Unique MAC
-        x-podman.interface_name: eth0  #Mandatory but is only active in podman compose > 1.3.0
+        x-podman.interface_name: eth0  #Mandatory but is only supported since podman compose >= 1.4.0
       podman:
-        x-podman.interface_name: eth1  #Mandatory but is only active in podman compose > 1.3.0
+        x-podman.interface_name: eth1  #Mandatory but is only supported since podman compose >= 1.4.0
     cap_add:
       - "ALL" # Give container all capabilities and later restrict through apparmor
     systemd: always # Necessary for Virtual PLCnext Controls
@@ -55,6 +55,7 @@ services:
     stop_grace_period: 60s # grace period for container shutdown.
     devices:
       - /dev/fuse #Necessary for SquashFS mounts and PLCnextApp support
+      - /dev/net/tun # Allow rootless networking inside container.
     security_opt:
       - unmask="/proc/*" #Necessary for container in container support
       - apparmor=vplcnextcontrol # use "vplcnextcontrol" profile for more security.
@@ -67,11 +68,10 @@ services:
     ports:
       - "8080:80"
       - "8443:443"
-    # Features not supported by default Debian 12
     logging:
       driver: journald
     x-podman.uidmaps: # User ID mapping. ContainerUser:HostUser:AmmountOfUIDsAvailable 
-        - "0:10000:65536"
+        - "0:10000:265536"
     x-podman.gidmaps: # Group ID mapping. ContainerGroup:HostGroup:AmmountOfGIDsAvailable
-        - "0:10000:65536"
+        - "0:10000:265536"
 
