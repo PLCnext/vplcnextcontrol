@@ -55,7 +55,9 @@ services:
     stop_grace_period: 60s # grace period for container shutdown.
     devices:
       - /dev/fuse #Necessary for SquashFS mounts and PLCnextApp support
-      - /dev/net/tun # Allow rootless networking inside container.
+      - /dev/net/tun # Allow rootless networking inside container.      
+    tmpfs:
+      - /var/volatile:rw,nodev,mode=1777
     security_opt:
       - unmask="/proc/*" #Necessary for container in container support
       - apparmor=vplcnextcontrol # use "vplcnextcontrol" profile for more security.
