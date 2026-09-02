@@ -21,6 +21,10 @@ if  eval "podman container exists ${container_id}"; then
         volume_name="${volume_name%%:*}"
         volume_mnt=$(podman volume mount $volume_name)
 
+        if [ -z "$volume_name" ]; then
+            continue
+        fi
+
         #echo "Volume name: ${volume_name}, mount: ${volume_mnt}"
         #echo "Container path: ${container_path}"
         full_container_path="${container_mnt}${container_path}"
